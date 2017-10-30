@@ -20,6 +20,7 @@ Tool to find peaks within a specified radius of an address.
       -s {elevation,distance}
                             key for sorting results
       -i                    invert sorting
+      -e MIN_ELEVATION      minimum elevation of peaks to show
     
     $ python3 peakfinder.py "hauptplatz 1 graz" -n 3
     #1      Rannachbauerkogel       ele:842m        dist:9.891km    lat:47.155   lon:15.399

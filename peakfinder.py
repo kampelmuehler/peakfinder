@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-__author__ = "Moritz Kampelmuehler"
+__author__ = "Moritz Kampelmuehler, Michael Mueller"
 
 import argparse
 import dill as pickle
@@ -23,10 +23,12 @@ def main():
             help='key for sorting results')
     parser.add_argument('-i', dest='sort_inv', action='store_true',
             default=False, help='invert sorting')
+    parser.add_argument('-e', dest='min_elevation', default=0, type=int,
+            help='minimum elevation of peaks to show')
 
     args = parser.parse_args()
 
-    address, radius, count = args.address, args.radius, args.count
+    address, radius, count, min_elevation = args.address, args.radius, args.count, args.min_elevation
     sort_key, sort_inv = args.sort_key, args.sort_inv
 
     assert(sort_key in ['distance', 'elevation'])
@@ -78,6 +80,11 @@ def main():
         return
 
     peaks_sorted = sorted(peak_list, key=lambda k: int(k[sort_key]))
+
+    if min_elevation != 0:
+        peaks_sorted = [i for i in peaks_sorted if int(i['elevation'])>=min_elevation]
+        if not peaks_sorted:
+            return
 
     peaks_print = peaks_sorted if sort_inv else peaks_sorted[::-1]
     peaks_print = peaks_print if count == 0 else peaks_print[:count]
