@@ -66,14 +66,16 @@ def main():
     peak_list = []
     for node in response.nodes:
         if 'ele' in node.tags.keys() and 'name' in node.tags.keys():
+            tr = {ord('m'): None, ord(','): '.'}  # mitigate some mapping errors
+            ele = float(node.tags['ele'].translate(tr).replace(' Meter', ''))
             lat = float(node.lat)
             lon = float(node.lon)
             dist = distance((lat, lon), (location.raw['lat'], location.raw['lon']))
-            peak_list.append(
-                {'elevation': node.tags['ele'],
+            peak_list.append({
+                'elevation': ele,
                 'latitude': lat,
-                'distance': dist.kilometers,
                 'longitude': lon,
+                'distance': dist.kilometers,
                 'name': node.tags['name']})
 
     if not peak_list:
@@ -82,7 +84,7 @@ def main():
     peaks_sorted = sorted(peak_list, key=lambda k: int(k[sort_key]))
 
     if min_elevation != 0:
-        peaks_sorted = [i for i in peaks_sorted if int(i['elevation'])>=min_elevation]
+        peaks_sorted = [p for p in peaks_sorted if p['elevation'] >= min_elevation]
         if not peaks_sorted:
             return
 
