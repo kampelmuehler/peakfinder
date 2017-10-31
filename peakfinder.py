@@ -93,7 +93,7 @@ def main():
 
     name_width = max([len(peak['name']) for peak in peaks_print])
     format_str = ('#{0:d}\t{1:' + str(name_width) + 's}\tele:{2:d}m\t'
-            'dist:{3:.3f}km\tlat:{4:.3f}\tlon:{5:.3f}')
+            'dist:{3:.3f}km\tpos:{4:.6f},{5:.6f}')
 
     for k, peak in enumerate(peaks_print):
         name, dist = peak['name'], peak['distance']
